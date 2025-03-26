@@ -71,23 +71,22 @@ public class Selenium {
     
 	@Test
 	public void testLogout() throws InterruptedException {
-	    testLoginSuccess();  // Asegúrate de que el usuario haya iniciado sesión antes de realizar logout
+	    testLoginSuccess();  
 	    
-	    Thread.sleep(5000);  // Espera para asegurarse de que la página se haya cargado correctamente
+	    Thread.sleep(5000); 
 
-	    // Localizamos y tocamos el botón del menú
+
 	    WebElement menuButton = driver.findElement(By.xpath("//div[@class='bm-burger-button']//button[text()='Open Menu']"));
 	    assertNotNull("No se encontró el botón de menú", menuButton);
 	    menuButton.click();
 
-	    Thread.sleep(2000);  // Esperamos para asegurarnos de que el menú se haya desplegado
+	    Thread.sleep(2000); 
 
-	    // Ahora localizamos y tocamos el enlace de Logout dentro del menú
+
 	    WebElement logoutLink = driver.findElement(By.id("logout_sidebar_link"));
 	    assertNotNull("No se encontró el enlace de Logout", logoutLink);
-	    logoutLink.click();  // Hacemos clic en el enlace de Logout
+	    logoutLink.click();  
 
-	    // Verificamos que hemos sido redirigidos a la página de login
 	    WebElement loginButton = driver.findElement(By.id("login-button"));
 	    assertNotNull("No se redirigió correctamente a la página de login", loginButton);
 	    assertTrue("El botón de login no está visible", loginButton.isDisplayed());
@@ -135,53 +134,53 @@ public class Selenium {
     
     @Test
     public void testRemoveItemFromCart() {
-        // Asegúrate de que se haya agregado un producto al carrito previamente
+   
         testAddItemToCart();
 
-        // Esperamos 2 segundos antes de intentar eliminar el artículo
+  
         try {
-            Thread.sleep(2000);  // Espera de 2 segundos
+            Thread.sleep(2000); 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // Localizamos y tocamos el botón REMOVE dentro del carrito
+     
         WebElement removeButton = driver.findElement(By.cssSelector(".cart_item .btn_secondary.cart_button"));
 
         assertNotNull("No se encontró el botón de remover del carrito", removeButton);
         removeButton.click();
 
-        // Esperamos 5 segundos para asegurarnos de que el carrito se actualice
+   
         try {
-            Thread.sleep(5000);  // Espera de 5 segundos
+            Thread.sleep(5000); 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // Ahora, localizamos y hacemos clic en "Continue Shopping"
+    
         WebElement continueShoppingButton = driver.findElement(By.cssSelector("a.btn_secondary[href='./inventory.html']"));
 
         assertNotNull("No se encontró el botón 'Continue Shopping'", continueShoppingButton);
         continueShoppingButton.click();
 
-        // Esperamos que la página de inventario se cargue
+     
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         try {
-            // Intentamos localizar el span del carrito con la clase "shopping_cart_badge"
+       
             WebElement cartBadge = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".shopping_cart_badge")));
             
-            // Verificamos que el número de artículos sea 0
+          
             assertEquals("El carrito debería estar vacío después de remover el producto", "0", cartBadge.getText());
         } catch (TimeoutException e) {
-            // Si no se encuentra el badge, significa que el carrito está vacío
+       
             try {
                 WebElement cartIcon = driver.findElement(By.className("shopping_cart_link"));
                 
-                // Verificamos que el icono del carrito no tenga cantidad, indicando que está vacío
+         
                 assertTrue("El carrito debería estar vacío, pero tiene artículos", cartIcon.getText().isEmpty() || cartIcon.getText().equals("0"));
             } catch (NoSuchElementException ex) {
-                // Si tampoco se encuentra el icono, algo ha fallado
+             
                 fail("No se encontró el icono del carrito");
             }
         }
